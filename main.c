@@ -30,23 +30,14 @@ int32_t count_vowels()
   int rc;
 
   
-  char *memuri = sqlite3_mprintf("file:whatever?ptr=0x%p&sz=%d&freeonclose=1",
+  char *memuri = sqlite3_mprintf("/path/to/your.db",
                                  &dbbytes, sizeof(dbbytes));
 
   sqlite3 *db;
-  sqlite3_db_config(db, SQLITE_DBCONFIG_ENABLE_LOAD_EXTENSION, 1, NULL);
-	if (sqlite3_memvfs_init(db, NULL, NULL) != SQLITE_OK_LOAD_PERMANENTLY)
-	{
-    int n = snprintf(out, 128, "error loading memvfs");
-    uint64_t offs_ = extism_alloc(n);
-    extism_store(offs_, (const uint8_t *)out, n);
-    extism_output_set(offs_, n);
-    return 0;
-	}
 
-  rc = sqlite3_open_v2(memuri, &db, SQLITE_OPEN_READONLY | SQLITE_OPEN_URI, "memvfs");
+  rc = sqlite3_open(memuri, &db);
   if (rc != SQLITE_OK) {
-    int n = snprintf(out, 128, "open memvfs: %s\n", sqlite3_errmsg(db));
+    int n = snprintf(out, 128, "open failed: %s\n", sqlite3_errmsg(db));
     uint64_t offs_ = extism_alloc(n);
     extism_store(offs_, (const uint8_t *)out, n);
     extism_output_set(offs_, n);
