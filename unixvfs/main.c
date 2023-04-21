@@ -1,10 +1,11 @@
+#include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 
 #include "extism/extism-pdk.h"
 #include "sqlite3.h"
 #include "sqlite3ext.h"
-
-#include <errno.h>
 
 // TODO: clean this up
 
